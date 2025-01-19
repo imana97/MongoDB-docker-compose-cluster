@@ -1,0 +1,116 @@
+version: '3.8'
+
+services:
+  # Configuration server
+  configs:
+    container_name: configs
+    image: mongo:8.0.4
+    command: mongod --configsvr --replSet configReplSet --port 27017 --dbpath /data/db
+    ports:
+      - 10001:27017
+    volumes:
+      - /mnt/f/Database/MongoDB/configs:/data/db
+
+  # Shard 1 servers
+  shard1s1:
+    container_name: shard1s1
+    image: mongo
+    command: mongod --shardsvr --replSet shard1rs --port 27017 --dbpath /data/db
+    ports:
+      - 20001:27017
+    volumes:
+      - /mnt/f/Database/MongoDB/shard1s1:/data/db
+
+  shard1s2:
+    container_name: shard1s2
+    image: mongo
+    command: mongod --shardsvr --replSet shard1rs --port 27017 --dbpath /data/db
+    ports:
+      - 20002:27017
+    volumes:
+      - /mnt/f/Database/MongoDB/shard1s2:/data/db
+
+  shard1s3:
+    container_name: shard1s3
+    image: mongo
+    command: mongod --shardsvr --replSet shard1rs --port 27017 --dbpath /data/db
+    ports:
+      - 20003:27017
+    volumes:
+      - /mnt/f/Database/MongoDB/shard1s3:/data/db
+
+  shard1s4:
+    container_name: shard1s4
+    image: mongo
+    command: mongod --shardsvr --replSet shard1rs --port 27017 --dbpath /data/db
+    ports:
+      - 20004:27017
+    volumes:
+      - /mnt/f/Database/MongoDB/shard1s4:/data/db
+
+  shard1s5:
+    container_name: shard1s5
+    image: mongo
+    command: mongod --shardsvr --replSet shard1rs --port 27017 --dbpath /data/db
+    ports:
+      - 20005:27017
+    volumes:
+      - /mnt/f/Database/MongoDB/shard1s5:/data/db
+
+  shard1s6:
+    container_name: shard1s6
+    image: mongo
+    command: mongod --shardsvr --replSet shard1rs --port 27017 --dbpath /data/db
+    ports:
+      - 20006:27017
+    volumes:
+      - /mnt/f/Database/MongoDB/shard1s6:/data/db
+
+  shard1s7:
+    container_name: shard1s7
+    image: mongo
+    command: mongod --shardsvr --replSet shard1rs --port 27017 --dbpath /data/db
+    ports:
+      - 20007:27017
+    volumes:
+      - /mnt/f/Database/MongoDB/shard1s7:/data/db
+
+  shard1s8:
+    container_name: shard1s8
+    image: mongo
+    command: mongod --shardsvr --replSet shard1rs --port 27017 --dbpath /data/db
+    ports:
+      - 20008:27017
+    volumes:
+      - /mnt/f/Database/MongoDB/shard1s8:/data/db
+
+  shard1s9:
+    container_name: shard1s9
+    image: mongo
+    command: mongod --shardsvr --replSet shard1rs --port 27017 --dbpath /data/db
+    ports:
+      - 20009:27017
+    volumes:
+      - /mnt/f/Database/MongoDB/shard1s9:/data/db
+
+  shard1s10:
+    container_name: shard1s10
+    image: mongo
+    command: mongod --shardsvr --replSet shard1rs --port 27017 --dbpath /data/db
+    ports:
+      - 20010:27017
+    volumes:
+      - /mnt/f/Database/MongoDB/shard1s10:/data/db
+
+  # Mongos router
+  mongos:
+    container_name: mongos
+    image: mongo
+    command: mongos --configdb cfgrs/10.0.2.15:10001,10.0.2.15:10002,10.0.2.15:10003 --bind_ip 0.0.0.0 --port 27017
+    ports:
+      - 30000:27017
+
+
+
+
+
