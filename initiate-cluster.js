@@ -24,7 +24,7 @@ async function initiateCluster() {
     const shardDb = shardClient.db('admin');
     await shardDb.command({
       replSetInitiate: {
-        _id: "shard1rs",
+        _id: "shardrs",
         members: [
           { _id: 0, host: "localhost:20001" },
           { _id: 1, host: "localhost:20002" },
@@ -45,7 +45,7 @@ async function initiateCluster() {
     await mongosClient.connect();
     const mongosDb = mongosClient.db('admin');
     await mongosDb.command({
-      addShard: "shard1rs/localhost:20001,localhost:20002,localhost:20003,localhost:20004,localhost:20005,localhost:20006,localhost:20007,localhost:20008,localhost:20009,localhost:20010"
+      addShard: "shardrs/localhost:20001,localhost:20002,localhost:20003,localhost:20004,localhost:20005,localhost:20006,localhost:20007,localhost:20008,localhost:20009,localhost:20010"
     });
 
     console.log('Cluster initiated successfully');
