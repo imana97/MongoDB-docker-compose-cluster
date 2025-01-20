@@ -18,23 +18,51 @@ Run the following command to start the MongoDB containers:
 docker-compose up -d
 ```
 
-### Step 2: Initialize the Cluster
+### Step 2: Customize Docker Compose
 
-First, install the npm package dependencies:
+You can customize the Docker Compose file to suit your needs. For example, you can change the memory limits, CPU limits, and volume paths.
 
-```sh
-npm install
+#### Example for Windows
+
+```yaml
+volumes:
+  - F:/Database/MongoDBCluster/configs1:/data/db
 ```
 
-Then, run the following command to initialize the cluster:
+#### Example for Linux
+
+```yaml
+volumes:
+  - /mnt/f/Database/MongoDBCluster/configs1:/data/db
+```
+
+### Step 3: Initiate the Cluster
+
+#### For Linux/MacOS
+
+First, make the script executable:
 
 ```sh
-npm start --configsvr
+chmod +x initiate-cluster.sh
+```
+
+Then, run the script:
+
+```sh
+./initiate-cluster.sh
+```
+
+#### For Windows
+
+Run the batch script:
+
+```sh
+initiate-cluster.bat
 ```
 
 This script will set up the config server replica set, the shard replica set, and add the shard to the cluster.
 
-## Using the Cluster in a Node.js Application
+### Step 4: Using the Cluster in a Node.js Application
 
 To connect to the MongoDB sharding cluster from a Node.js application, use the following connection string:
 
@@ -59,7 +87,7 @@ main().catch(console.error);
 
 Replace `// ... your application code ...` with your actual application logic.
 
-## Stopping the Cluster
+### Step 5: Stopping the Cluster
 
 To stop the MongoDB containers, run:
 
@@ -68,3 +96,7 @@ docker-compose down
 ```
 
 This will stop and remove the containers.
+
+## Credits
+
+Credit to Iman Far (imanfar.com)
