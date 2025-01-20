@@ -1,4 +1,7 @@
-version: '3.8'
+
+networks:
+  mongodb_network:
+    driver: bridge
 
 services:
   # Configuration server
@@ -10,14 +13,16 @@ services:
     ports:
       - 10001:27017
     volumes:
-      - /mnt/f/Database/MongoDB/configs:/data/db
+      - F:/Database/MongoDBCluster/configs1:/data/db
     networks:
       - mongodb_network
     deploy:
       resources:
         limits:
-          memory: 8GB
+          memory: 6GB
           cpus: '0.5'
+    environment:
+      - GLIBC_TUNABLES=glibc.pthread.rseq=0
 
   configs2:
     container_name: configs2
@@ -27,14 +32,16 @@ services:
     ports:
       - 10002:27017
     volumes:
-      - /mnt/f/Database/MongoDB/configs2:/data/db
+      - F:/Database/MongoDBCluster/configs2:/data/db
     networks:
       - mongodb_network
     deploy:
       resources:
         limits:
-          memory: 8GB
+          memory: 6GB
           cpus: '0.5'
+    environment:
+      - GLIBC_TUNABLES=glibc.pthread.rseq=0
 
   configs3:
     container_name: configs3
@@ -44,134 +51,157 @@ services:
     ports:
       - 10003:27017
     volumes:
-      - /mnt/f/Database/MongoDB/configs3:/data/db
+      - F:/Database/MongoDBCluster/configs3:/data/db
+    networks:
+      - mongodb_network
+    deploy:
+      resources:
+        limits:
+          memory: 6GB
+          cpus: '0.5'
+    environment:
+      - GLIBC_TUNABLES=glibc.pthread.rseq=0
+
+  # Shard servers
+  shards1:
+    container_name: shards1
+    hostname: shards1
+    image: mongo:8.0.4
+    command: mongod --shardsvr --replSet shardrs --port 27017 --dbpath /data/db --wiredTigerCacheSizeGB 8 --bind_ip_all
+    ports:
+      - 20001:27017
+    volumes:
+      - F:/Database/MongoDBCluster/shards1:/data/db
     networks:
       - mongodb_network
     deploy:
       resources:
         limits:
           memory: 8GB
-          cpus: '0.5'
-
-  # Shard servers
-  shards1:
-    container_name: shards1
-    image: mongo:8.0.4
-    command: mongod --shardsvr --replSet shardrs --port 27017 --dbpath /data/db --wiredTigerCacheSizeGB 8 --bind_ip_all
-    ports:
-      - 20001:27017
-    volumes:
-      - /mnt/f/Database/MongoDB/shards1:/data/db
-    networks:
-      - mongodb_network
-    deploy:
-      resources:
-        limits:
-          memory: 12GB
           cpus: '0.75'
+    environment:
+      - GLIBC_TUNABLES=glibc.pthread.rseq=0
 
   shards2:
     container_name: shards2
+    hostname: shards2
     image: mongo:8.0.4
     command: mongod --shardsvr --replSet shardrs --port 27017 --dbpath /data/db --wiredTigerCacheSizeGB 8 --bind_ip_all
     ports:
       - 20002:27017
     volumes:
-      - /mnt/f/Database/MongoDB/shards2:/data/db
+      - F:/Database/MongoDBCluster/shards2:/data/db
     networks:
       - mongodb_network
     deploy:
       resources:
         limits:
-          memory: 12GB
+          memory: 8GB
           cpus: '0.75'
+    environment:
+      - GLIBC_TUNABLES=glibc.pthread.rseq=0
 
   shards3:
     container_name: shards3
+    hostname: shards3
     image: mongo:8.0.4
     command: mongod --shardsvr --replSet shardrs --port 27017 --dbpath /data/db --wiredTigerCacheSizeGB 8 --bind_ip_all
     ports:
       - 20003:27017
     volumes:
-      - /mnt/f/Database/MongoDB/shards3:/data/db
+      - F:/Database/MongoDBCluster/shards3:/data/db
     networks:
       - mongodb_network
     deploy:
       resources:
         limits:
-          memory: 12GB
+          memory: 8GB
           cpus: '0.75'
+    environment:
+      - GLIBC_TUNABLES=glibc.pthread.rseq=0
 
   shards4:
     container_name: shards4
+    hostname: shards4
     image: mongo:8.0.4
     command: mongod --shardsvr --replSet shardrs --port 27017 --dbpath /data/db --wiredTigerCacheSizeGB 8 --bind_ip_all
     ports:
       - 20004:27017
     volumes:
-      - /mnt/f/Database/MongoDB/shards4:/data/db
+      - F:/Database/MongoDBCluster/shards4:/data/db
     networks:
       - mongodb_network
     deploy:
       resources:
         limits:
-          memory: 12GB
+          memory: 8GB
           cpus: '0.75'
+    environment:
+      - GLIBC_TUNABLES=glibc.pthread.rseq=0
 
   shards5:
     container_name: shards5
+    hostname: shards5
     image: mongo:8.0.4
     command: mongod --shardsvr --replSet shardrs --port 27017 --dbpath /data/db --wiredTigerCacheSizeGB 8 --bind_ip_all
     ports:
       - 20005:27017
     volumes:
-      - /mnt/f/Database/MongoDB/shards5:/data/db
+      - F:/Database/MongoDBCluster/shards5:/data/db
     networks:
       - mongodb_network
     deploy:
       resources:
         limits:
-          memory: 12GB
+          memory: 8GB
           cpus: '0.75'
+    environment:
+      - GLIBC_TUNABLES=glibc.pthread.rseq=0
 
   shards6:
     container_name: shards6
+    hostname: shards6
     image: mongo:8.0.4
     command: mongod --shardsvr --replSet shardrs --port 27017 --dbpath /data/db --wiredTigerCacheSizeGB 8 --bind_ip_all
     ports:
       - 20006:27017
     volumes:
-      - /mnt/f/Database/MongoDB/shards6:/data/db
+      - F:/Database/MongoDBCluster/shards6:/data/db
     networks:
       - mongodb_network
     deploy:
       resources:
         limits:
-          memory: 12GB
+          memory: 8GB
           cpus: '0.75'
+    environment:
+      - GLIBC_TUNABLES=glibc.pthread.rseq=0
 
   shards7:
     container_name: shards7
+    hostname: shards7
     image: mongo:8.0.4
     command: mongod --shardsvr --replSet shardrs --port 27017 --dbpath /data/db --wiredTigerCacheSizeGB 8 --bind_ip_all
     ports:
       - 20007:27017
     volumes:
-      - /mnt/f/Database/MongoDB/shards7:/data/db
+      - F:/Database/MongoDBCluster/shards7:/data/db
     networks:
       - mongodb_network
     deploy:
       resources:
         limits:
-          memory: 12GB
+          memory: 8GB
           cpus: '0.75'
+    environment:
+      - GLIBC_TUNABLES=glibc.pthread.rseq=0
 
   # Mongos router
   mongos:
     container_name: mongos
     hostname: mongos
     image: mongo:8.0.4
-    command: mongos --configdb configReplSet/configs1:10001,configs2:10002,configs3:10003 --bind_ip_all --port 27017
+    command: mongos --configdb configReplSet/configs1:27017,configs2:27017,configs3:27017 --bind_ip_all
     ports:
       - 30000:27017
     networks:
@@ -192,7 +222,5 @@ services:
       - shards5
       - shards6
       - shards7
-
-networks:
-  mongodb_network:
-    driver: bridge
+    environment:
+      - GLIBC_TUNABLES=glibc.pthread.rseq=0
