@@ -63,14 +63,51 @@ EOF
   echo "Config server $hostname removed."
 }
 
+function update_shard() {
+  mongosh --port 20001 <<EOF
+rs.add({
+  host: "shards1:27017"
+})
+rs.add({
+  host: "shards2:27017"
+})
+rs.add({
+  host: "shards3:27017"
+})
+rs.add({
+  host: "shards4:27017"
+})
+rs.add({
+  host: "shards5:27017"
+})
+rs.add({
+  host: "shards6:27017"
+})
+rs.add({
+  host: "shards7:27017"
+})
+EOF
+  echo "Shard replica set updated."
+}
+
+function remove_shard() {
+  read -p "Enter the hostname of the shard to remove (e.g., shards1): " hostname
+  mongosh --port 20001 <<EOF
+rs.remove("$hostname:27017")
+EOF
+  echo "Shard $hostname removed."
+}
+
 echo "Choose an operation:"
 echo "1. Initiate Config Server Replica Set"
 echo "2. Initiate Shard Replica Set"
 echo "3. Add Shard to Mongos Router"
 echo "4. Update Config Server Replica Set"
 echo "5. Remove Config Server"
-echo "6. Quit"
-read -p "Enter choice [1-6]: " choice
+echo "6. Update Shard Replica Set"
+echo "7. Remove Shard Replica Set"
+echo "8. Quit"
+read -p "Enter choice [1-8]: " choice
 
 case $choice in
   1)
@@ -89,6 +126,12 @@ case $choice in
     remove_config_server
     ;;
   6)
+    update_shard
+    ;;
+  7)
+    remove_shard
+    ;;
+  8)
     echo "Quitting without performing any operation."
     ;;
   *)
