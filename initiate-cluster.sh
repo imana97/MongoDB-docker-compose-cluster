@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function initiate_config_server() {
-  mongosh --port 10001 <<EOF
+  docker exec -it configs1 mongosh --port 27017 <<EOF
 rs.initiate({
   _id: "configReplSet",
   configsvr: true,
@@ -16,7 +16,7 @@ EOF
 }
 
 function initiate_shard() {
-  mongosh --port 20001 <<EOF
+  docker exec -it shards1 mongosh --port 27017 <<EOF
 rs.initiate({
   _id: "shardrs",
   members: [
@@ -34,14 +34,14 @@ EOF
 }
 
 function add_shard_to_router() {
-  mongosh --port 30000 <<EOF
+  docker exec -it mongos mongosh --port 27017 <<EOF
 sh.addShard("shardrs/shards1:27017,shards2:27017,shards3:27017,shards4:27017,shards5:27017,shards6:27017,shards7:27017")
 EOF
   echo "Shard added to mongos router."
 }
 
 function update_config_server() {
-  mongosh --port 10001 <<EOF
+  docker exec -it configs1 mongosh --port 27017 <<EOF
 rs.add({
   host: "configs1:27017"
 })
@@ -57,14 +57,14 @@ EOF
 
 function remove_config_server() {
   read -p "Enter the hostname of the config server to remove (e.g., configs1): " hostname
-  mongosh --port 10001 <<EOF
+  docker exec -it configs1 mongosh --port 27017 <<EOF
 rs.remove("$hostname:27017")
 EOF
   echo "Config server $hostname removed."
 }
 
 function update_shard() {
-  mongosh --port 20001 <<EOF
+  docker exec -it shards1 mongosh --port 27017 <<EOF
 rs.add({
   host: "shards1:27017"
 })
@@ -92,7 +92,7 @@ EOF
 
 function remove_shard() {
   read -p "Enter the hostname of the shard to remove (e.g., shards1): " hostname
-  mongosh --port 20001 <<EOF
+  docker exec -it shards1 mongosh --port 27017 <<EOF
 rs.remove("$hostname:27017")
 EOF
   echo "Shard $hostname removed."
