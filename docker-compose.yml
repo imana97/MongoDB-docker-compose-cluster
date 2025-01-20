@@ -4,109 +4,159 @@ services:
   # Configuration server
   configs:
     container_name: configs
+    hostname: configs
     image: mongo:8.0.4
-    command: mongod --configsvr --replSet configReplSet --port 27017 --dbpath /data/db
+    command: mongod --configsvr --replSet configReplSet --port 27017 --dbpath /data/db --wiredTigerCacheSizeGB 4 --bind_ip_all
     ports:
       - 10001:27017
     volumes:
       - /mnt/f/Database/MongoDB/configs:/data/db
+    networks:
+      - mongodb_network
+    deploy:
+      resources:
+        limits:
+          memory: 8GB
+          cpus: '0.5'
 
   # Shard servers
   shards1:
     container_name: shards1
     image: mongo:8.0.4
-    command: mongod --shardsvr --replSet shardrs --port 27017 --dbpath /data/db
+    command: mongod --shardsvr --replSet shardrs --port 27017 --dbpath /data/db --wiredTigerCacheSizeGB 8 --bind_ip_all
     ports:
       - 20001:27017
     volumes:
       - /mnt/f/Database/MongoDB/shards1:/data/db
+    networks:
+      - mongodb_network
+    deploy:
+      resources:
+        limits:
+          memory: 12GB
+          cpus: '0.75'
 
   shards2:
     container_name: shards2
     image: mongo:8.0.4
-    command: mongod --shardsvr --replSet shardrs --port 27017 --dbpath /data/db
+    command: mongod --shardsvr --replSet shardrs --port 27017 --dbpath /data/db --wiredTigerCacheSizeGB 8 --bind_ip_all
     ports:
       - 20002:27017
     volumes:
       - /mnt/f/Database/MongoDB/shards2:/data/db
+    networks:
+      - mongodb_network
+    deploy:
+      resources:
+        limits:
+          memory: 12GB
+          cpus: '0.75'
 
   shards3:
     container_name: shards3
     image: mongo:8.0.4
-    command: mongod --shardsvr --replSet shardrs --port 27017 --dbpath /data/db
+    command: mongod --shardsvr --replSet shardrs --port 27017 --dbpath /data/db --wiredTigerCacheSizeGB 8 --bind_ip_all
     ports:
       - 20003:27017
     volumes:
       - /mnt/f/Database/MongoDB/shards3:/data/db
+    networks:
+      - mongodb_network
+    deploy:
+      resources:
+        limits:
+          memory: 12GB
+          cpus: '0.75'
 
   shards4:
     container_name: shards4
     image: mongo:8.0.4
-    command: mongod --shardsvr --replSet shardrs --port 27017 --dbpath /data/db
+    command: mongod --shardsvr --replSet shardrs --port 27017 --dbpath /data/db --wiredTigerCacheSizeGB 8 --bind_ip_all
     ports:
       - 20004:27017
     volumes:
       - /mnt/f/Database/MongoDB/shards4:/data/db
+    networks:
+      - mongodb_network
+    deploy:
+      resources:
+        limits:
+          memory: 12GB
+          cpus: '0.75'
 
   shards5:
     container_name: shards5
     image: mongo:8.0.4
-    command: mongod --shardsvr --replSet shardrs --port 27017 --dbpath /data/db
+    command: mongod --shardsvr --replSet shardrs --port 27017 --dbpath /data/db --wiredTigerCacheSizeGB 8 --bind_ip_all
     ports:
       - 20005:27017
     volumes:
       - /mnt/f/Database/MongoDB/shards5:/data/db
+    networks:
+      - mongodb_network
+    deploy:
+      resources:
+        limits:
+          memory: 12GB
+          cpus: '0.75'
 
   shards6:
     container_name: shards6
     image: mongo:8.0.4
-    command: mongod --shardsvr --replSet shardrs --port 27017 --dbpath /data/db
+    command: mongod --shardsvr --replSet shardrs --port 27017 --dbpath /data/db --wiredTigerCacheSizeGB 8 --bind_ip_all
     ports:
       - 20006:27017
     volumes:
       - /mnt/f/Database/MongoDB/shards6:/data/db
+    networks:
+      - mongodb_network
+    deploy:
+      resources:
+        limits:
+          memory: 12GB
+          cpus: '0.75'
 
   shards7:
     container_name: shards7
     image: mongo:8.0.4
-    command: mongod --shardsvr --replSet shardrs --port 27017 --dbpath /data/db
+    command: mongod --shardsvr --replSet shardrs --port 27017 --dbpath /data/db --wiredTigerCacheSizeGB 8 --bind_ip_all
     ports:
       - 20007:27017
     volumes:
       - /mnt/f/Database/MongoDB/shards7:/data/db
-
-  shards8:
-    container_name: shards8
-    image: mongo:8.0.4
-    command: mongod --shardsvr --replSet shardrs --port 27017 --dbpath /data/db
-    ports:
-      - 20008:27017
-    volumes:
-      - /mnt/f/Database/MongoDB/shards8:/data/db
-
-  shards9:
-    container_name: shards9
-    image: mongo:8.0.4
-    command: mongod --shardsvr --replSet shardrs --port 27017 --dbpath /data/db
-    ports:
-      - 20009:27017
-    volumes:
-      - /mnt/f/Database/MongoDB/shards9:/data/db
-
-  shards10:
-    container_name: shards10
-    image: mongo:8.0.4
-    command: mongod --shardsvr --replSet shardrs --port 27017 --dbpath /data/db
-    ports:
-      - 20010:27017
-    volumes:
-      - /mnt/f/Database/MongoDB/shards10:/data/db
+    networks:
+      - mongodb_network
+    deploy:
+      resources:
+        limits:
+          memory: 12GB
+          cpus: '0.75'
 
   # Mongos router
   mongos:
     container_name: mongos
+    hostname: mongos
     image: mongo:8.0.4
-    command: mongos --configdb cfgrs/10.0.2.15:10001,10.0.2.15:10002,10.0.2.15:10003 --bind_ip 0.0.0.0 --port 27017
+    command: mongos --configdb configReplSet/configs:10001 --bind_ip_all --port 27017
     ports:
       - 30000:27017
+    networks:
+      - mongodb_network
+    deploy:
+      resources:
+        limits:
+          memory: 4GB
+          cpus: '0.5'
+    depends_on:
+      - configs
+      - shards1
+      - shards2
+      - shards3
+      - shards4
+      - shards5
+      - shards6
+      - shards7
 
+networks:
+  mongodb_network:
+    driver: bridge
