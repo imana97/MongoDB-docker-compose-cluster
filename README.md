@@ -29,7 +29,7 @@ npm install
 Then, run the following command to initialize the cluster:
 
 ```sh
-npm start
+npm start --configsvr
 ```
 
 This script will set up the config server replica set, the shard replica set, and add the shard to the cluster.

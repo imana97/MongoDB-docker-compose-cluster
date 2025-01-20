@@ -2,15 +2,49 @@ version: '3.8'
 
 services:
   # Configuration server
-  configs:
-    container_name: configs
-    hostname: configs
+  configs1:
+    container_name: configs1
+    hostname: configs1
     image: mongo:8.0.4
     command: mongod --configsvr --replSet configReplSet --port 27017 --dbpath /data/db --wiredTigerCacheSizeGB 4 --bind_ip_all
     ports:
       - 10001:27017
     volumes:
       - /mnt/f/Database/MongoDB/configs:/data/db
+    networks:
+      - mongodb_network
+    deploy:
+      resources:
+        limits:
+          memory: 8GB
+          cpus: '0.5'
+
+  configs2:
+    container_name: configs2
+    hostname: configs2
+    image: mongo:8.0.4
+    command: mongod --configsvr --replSet configReplSet --port 27017 --dbpath /data/db --wiredTigerCacheSizeGB 4 --bind_ip_all
+    ports:
+      - 10002:27017
+    volumes:
+      - /mnt/f/Database/MongoDB/configs2:/data/db
+    networks:
+      - mongodb_network
+    deploy:
+      resources:
+        limits:
+          memory: 8GB
+          cpus: '0.5'
+
+  configs3:
+    container_name: configs3
+    hostname: configs3
+    image: mongo:8.0.4
+    command: mongod --configsvr --replSet configReplSet --port 27017 --dbpath /data/db --wiredTigerCacheSizeGB 4 --bind_ip_all
+    ports:
+      - 10003:27017
+    volumes:
+      - /mnt/f/Database/MongoDB/configs3:/data/db
     networks:
       - mongodb_network
     deploy:
@@ -137,7 +171,7 @@ services:
     container_name: mongos
     hostname: mongos
     image: mongo:8.0.4
-    command: mongos --configdb configReplSet/configs:10001 --bind_ip_all --port 27017
+    command: mongos --configdb configReplSet/configs1:10001,configs2:10002,configs3:10003 --bind_ip_all --port 27017
     ports:
       - 30000:27017
     networks:
@@ -148,7 +182,9 @@ services:
           memory: 4GB
           cpus: '0.5'
     depends_on:
-      - configs
+      - configs1
+      - configs2
+      - configs3
       - shards1
       - shards2
       - shards3
