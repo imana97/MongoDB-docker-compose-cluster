@@ -9,8 +9,6 @@ services:
     hostname: configs1
     image: mongo:8.0.4
     command: mongod --configsvr --replSet configReplSet --port 27017 --dbpath /data/db --wiredTigerCacheSizeGB 4 --bind_ip mongodb_network
-    ports:
-      - 10001:27017
     volumes:
       - F:/Database/MongoDBCluster/configs1:/data/db
     networks:
@@ -28,8 +26,6 @@ services:
     hostname: configs2
     image: mongo:8.0.4
     command: mongod --configsvr --replSet configReplSet --port 27017 --dbpath /data/db --wiredTigerCacheSizeGB 4 --bind_ip mongodb_network
-    ports:
-      - 10002:27017
     volumes:
       - F:/Database/MongoDBCluster/configs2:/data/db
     networks:
@@ -47,8 +43,6 @@ services:
     hostname: configs3
     image: mongo:8.0.4
     command: mongod --configsvr --replSet configReplSet --port 27017 --dbpath /data/db --wiredTigerCacheSizeGB 4 --bind_ip mongodb_network
-    ports:
-      - 10003:27017
     volumes:
       - F:/Database/MongoDBCluster/configs3:/data/db
     networks:
@@ -67,8 +61,6 @@ services:
     hostname: shards1
     image: mongo:8.0.4
     command: mongod --shardsvr --replSet shardrs --port 27017 --dbpath /data/db --wiredTigerCacheSizeGB 6 --bind_ip mongodb_network
-    ports:
-      - 20001:27017
     volumes:
       - F:/Database/MongoDBCluster/shards1:/data/db
     networks:
@@ -86,8 +78,6 @@ services:
     hostname: shards2
     image: mongo:8.0.4
     command: mongod --shardsvr --replSet shardrs --port 27017 --dbpath /data/db --wiredTigerCacheSizeGB 6 --bind_ip mongodb_network
-    ports:
-      - 20002:27017
     volumes:
       - F:/Database/MongoDBCluster/shards2:/data/db
     networks:
@@ -105,8 +95,6 @@ services:
     hostname: shards3
     image: mongo:8.0.4
     command: mongod --shardsvr --replSet shardrs --port 27017 --dbpath /data/db --wiredTigerCacheSizeGB 6 --bind_ip mongodb_network
-    ports:
-      - 20003:27017
     volumes:
       - F:/Database/MongoDBCluster/shards3:/data/db
     networks:
@@ -124,8 +112,6 @@ services:
     hostname: shards4
     image: mongo:8.0.4
     command: mongod --shardsvr --replSet shardrs --port 27017 --dbpath /data/db --wiredTigerCacheSizeGB 6 --bind_ip mongodb_network
-    ports:
-      - 20004:27017
     volumes:
       - F:/Database/MongoDBCluster/shards4:/data/db
     networks:
@@ -143,8 +129,6 @@ services:
     hostname: shards5
     image: mongo:8.0.4
     command: mongod --shardsvr --replSet shardrs --port 27017 --dbpath /data/db --wiredTigerCacheSizeGB 6 --bind_ip mongodb_network
-    ports:
-      - 20005:27017
     volumes:
       - F:/Database/MongoDBCluster/shards5:/data/db
     networks:
@@ -162,8 +146,6 @@ services:
     hostname: shards6
     image: mongo:8.0.4
     command: mongod --shardsvr --replSet shardrs --port 27017 --dbpath /data/db --wiredTigerCacheSizeGB 6 --bind_ip mongodb_network
-    ports:
-      - 20006:27017
     volumes:
       - F:/Database/MongoDBCluster/shards6:/data/db
     networks:
@@ -181,8 +163,6 @@ services:
     hostname: shards7
     image: mongo:8.0.4
     command: mongod --shardsvr --replSet shardrs --port 27017 --dbpath /data/db --wiredTigerCacheSizeGB 6 --bind_ip mongodb_network
-    ports:
-      - 20007:27017
     volumes:
       - F:/Database/MongoDBCluster/shards7:/data/db
     networks:
